@@ -34,37 +34,6 @@ Tras ejecutar este comando se levantará un servidor al que se puede acceder a t
 * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 ```
 
-## Levantando la página web en Heroku
-
-[**Heroku**](https://dashboard.heroku.com/apps) es una Plataforma como servicio (PaaS) que nos abstrae de tratar con servidores, todo lo que tenemos que hacer es registrarnos, descargar algunas herramientas y luego cargar nuestro código en la plataforma sin esfuerzo.
-### Instalando un servicio web llamado **gunicorn**
-
-```bash 
-$ pip install gunicorn
-```
-### Creamos un fichero `requirements.txt`
-
-```bash 
-$ pip freeze > requirements.txt
-```
-El cual ya está incluido en el actual repositorio.
-
-### Creando un fichero `Procfile`
-
-Debemos crear el fichero `Procfile` sin extensión y con la P mayúscula e incluir lo siguiente:
-
-```bash 
-web: gunicorn app:app
-```
-Aquí Heroku usa la web para iniciar un servidor web para la aplicación; `app:app` indica que el módulo y el nombre de la aplicación en nuestro caso.
-Recomendamos hacer un fork del presente repo para posteriormente crear una app en Heroku.
-
-### Creando una app en Heroku
-Antes de crear una aplicación, hay que asegurarse de que su cuenta de GitHub esté conectada con la cuenta de Heroku. Conectamos con la cuenta de GitHub y desplegamos la rama `master`.
-
-El servicio está actualmente disponible en la siguiente [url]().
-
-
 ## Tips de uso
 
 * El número máximo de tweets se establece en `1000` y sólo un mes hacia atrás. Puede anular esta opción en el archivo `twitterdash/scraper.py`.
