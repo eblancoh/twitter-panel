@@ -7,7 +7,7 @@ chardet==3.0.4
 Click==7.0
 coala-utils==0.5.1
 cycler==0.10.0
-Flask==1.1.1
+Flask==1.0.1
 Flask-SQLAlchemy==2.4.0
 gunicorn==19.9.0
 idna==2.8
