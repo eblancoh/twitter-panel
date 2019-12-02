@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 import pandas as pd
+import os
 from textblob import TextBlob
 from twitterdash.scraper import get_last_half_year_tweets, get_last_month_tweets
 from twitterdash.preprocessing import process_text
@@ -47,6 +48,7 @@ def dash():
         tweets_df = tweets_df.drop_duplicates('text')
         tweets_df['text'] = tweets_df['text'].apply(lambda x: x.strip())
         top_tweets = tweets_df.iloc[:3, :].to_dict("records")
+
 
         return render_template("dashboard.html", query=query, total_tweets=total_tweets,
         total_retweets=total_retweets, total_likes=total_likes, hashtags=zip(responses['hashtags'], styles),
