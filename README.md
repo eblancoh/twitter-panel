@@ -39,6 +39,10 @@ Tras ejecutar este comando se levantará un servidor al que se puede acceder a t
 * El número máximo de tweets se establece en `1000` y sólo un mes hacia atrás. Puede anular esta opción en el archivo `twitterdash/scraper.py`.
 * Cambiar el `poolsize` en `twitterdash/scraper.py` afectará la velocidad de scrapping, pero también el rendimiento.
 
+## Webapp levantada en Azure
+
+Se puede hacer uso del servicio en la url [https://twitter-panel.azurewebsites.net/](https://twitter-panel.azurewebsites.net/) **sólo a través de la VPN de 11Paths**.
+
 ## LICENSE
 This is free and unencumbered software released into the public domain.
 Anyone is free to copy, modify, publish, use, compile, sell, or

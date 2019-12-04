@@ -2,8 +2,10 @@ from flask import Flask, render_template, request, redirect, url_for
 import pandas as pd
 import os
 from textblob import TextBlob
+from textblob.exceptions import NotTranslated
 from scraper import get_last_half_year_tweets, get_last_month_tweets
 from preprocessing import process_text
+import numpy as np
 
 app = Flask(__name__)
 
@@ -37,11 +39,10 @@ def dash():
         responses = process_text(tweets_text, query)
         styles = ["primary", "success", "info", "warning", "danger", "secondary"]
 
-        # sentiment analysis
-        tweets_df['sentiment'] = tweets_df['text'].apply(lambda x: TextBlob(x).sentiment.polarity.is_integer())
-        sentiment = tweets_df['sentiment'].value_counts()
-        pos_sent = sentiment[True]
-        neg_sent = sentiment[False]
+        # Sentiment Analysis. Sacamos la polaridad del sentimiento
+        tweets_df['sentiment'] = tweets_df['text'].apply(lambda x: TextBlob(x).sentiment.polarity)
+        pos_sent = np.where(tweets_df['sentiment']>=-0.05)[0].__len__()
+        neg_sent = np.where(tweets_df['sentiment']<-0.05)[0].__len__()
 
         # sort tweets by likes then retweets and get the top 6 tweets
         tweets_df = tweets_df.sort_values(['retweets', 'likes'], ascending=False)
