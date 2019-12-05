@@ -18,7 +18,7 @@ def index():
 @app.route("/dash", methods=['POST'])
 def dash():
     query = request.form.get("query")
-    print("got query of", query)
+    print("Got query of", query)
     tweets = get_last_month_tweets(query)
     columns = ['fullname', 'is_retweet', 'likes',
                'replies', 'retweet_id', 'retweeter_userid', 'retweeter_username', 'retweets',
@@ -41,8 +41,10 @@ def dash():
 
         # Sentiment Analysis. Sacamos la polaridad del sentimiento
         tweets_df['sentiment'] = tweets_df['text'].apply(lambda x: TextBlob(x).sentiment.polarity)
-        pos_sent = np.where(tweets_df['sentiment']>=-0.05)[0].__len__()
-        neg_sent = np.where(tweets_df['sentiment']<-0.05)[0].__len__()
+        out_sent = np.where(tweets_df['sentiment']>=0.60)[0].__len__()
+        pos_sent = np.where((tweets_df['sentiment']>=0.30) & (tweets_df['sentiment']<0.60))[0].__len__()
+        neu_sent = np.where((tweets_df['sentiment']>=-0.10) & (tweets_df['sentiment']<0.30))[0].__len__()
+        neg_sent = np.where(tweets_df['sentiment']<-0.10)[0].__len__()
 
         # sort tweets by likes then retweets and get the top 6 tweets
         tweets_df = tweets_df.sort_values(['retweets', 'likes'], ascending=False)
@@ -50,10 +52,10 @@ def dash():
         tweets_df['text'] = tweets_df['text'].apply(lambda x: x.strip())
         top_tweets = tweets_df.iloc[:3, :].to_dict("records")
 
-
         return render_template("dashboard.html", query=query, total_tweets=total_tweets,
         total_retweets=total_retweets, total_likes=total_likes, hashtags=zip(responses['hashtags'], styles),
-        cloud_sign=responses['cloud_sign'], negative_counts=neg_sent, positive_counts=pos_sent, top_tweets=top_tweets)
+        cloud_sign=responses['cloud_sign'], negative_counts=neg_sent, positive_counts=pos_sent, 
+        neutral_counts = neu_sent, outstanding_counts = out_sent, top_tweets=top_tweets)
 
     except ValueError:
         # En el caso de que no haya encontrado nada, WordCloud va a dar un ValueError. 
